@@ -42,6 +42,9 @@ int main() {
         colony.draw();
         environment.drawFoodImage();
 
+        std::string percentageExplored = "Percentage Explored: " + std::to_string(colony.calculatePercentageExplored()) + "%";
+        DrawText(percentageExplored.c_str(), 10, 10, 20, WHITE);
+
         EndDrawing();
         //----------------------------------------------------------------------------------
 

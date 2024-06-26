@@ -15,7 +15,11 @@ public:
 
     void draw();
     void move();
+    void moveTo(int x, int y);
     // Other ant-related methods
+
+    int getX() const { return x; }
+    int getY() const { return y; }
 
     bool operator==(const Ant& other) const;
 
@@ -24,10 +28,6 @@ private:
     int id;
     int x;
     int y;
-    int maxHistory;
-    std::deque<std::pair<int, int>> history; // History of positions
-
-    bool isValidMove(int newX, int newY);
 
     // Other ant-related properties
 };

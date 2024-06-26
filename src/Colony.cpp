@@ -1,30 +1,22 @@
 #include "Colony.h"
 #include <iostream>
 
-Colony::Colony(Environment* env) : environment(env), idPool(1){
+Colony::Colony(Environment* env) : environment(env), idNums(0) {
     // Constructor implementation
+    initializeExplored(GetScreenWidth(), GetScreenHeight());
 }
 
 void Colony::initialize() {
     // Initialize the colony with 10 ants
-    for (int i = 0; i < 10; i++) {
-        int newId = idPool;
+    for (int i = 0; i < 100; i++) {
+        int newId = idNums;
         ants.push_back(Ant(newId, GetScreenWidth()/2, GetScreenHeight()/2));
-        idPool++;   
+        idNums++;
     }
 }
 
 void Colony::runSimulation() {
-    // Run the simulation
-    // for (int i = 0; i < 100; i++) {
-    //     // Move each ant
-    //     for (Ant& ant : ants) {
-    //         ant.move();
-    //     }
-
-    //     // Update the environment
-    //     environment->update();
-    // }
+    std::cout << "Simulation started >>>" << std::endl;
 }
 
 void Colony::draw()
@@ -36,8 +28,6 @@ void Colony::draw()
 }
 
 void Colony::updateColony() {
-    // Temporary vector to hold dead ants
-    std::vector<Ant> deadAnts;
     int numDead = 0;
 
     // Iterate through each ant in the colony
@@ -45,16 +35,17 @@ void Colony::updateColony() {
         ant.move();           // Move the ant
         ant.lifeSpan--;       // Decrease the lifespan
 
-        // Check if the ant's lifespan has reached 0
-        if (ant.lifeSpan <= 0) {
-            deadAnts.push_back(ant); // Add dead ant to temporary vector
+        // update the explored vector
+        if (ant.getX() >= 0 && ant.getX() < GetScreenWidth() && ant.getY() >= 0 && ant.getY() < GetScreenHeight()) {
+            explored[ant.getY()][ant.getX()] = 1;
         }
     }
 
-    // Remove dead ants from the colony
-    for (Ant& deadAnt : deadAnts) {
-        numDead++;
-        ants.erase(std::remove(ants.begin(), ants.end(), deadAnt), ants.end());
+    for (Ant& ant : ants) {
+        if (ant.lifeSpan <= 0) {
+            ants.erase(std::remove(ants.begin(), ants.end(), ant), ants.end());
+            numDead++;
+        }
     }
 
     replenishColony(numDead);
@@ -63,9 +54,36 @@ void Colony::updateColony() {
 void Colony::replenishColony(int numAnts) {
     // Replenish the colony with new ants
     for (int i = 0; i < numAnts; i++) {
-        int newid = idPool;
+        int newid = idNums;
         ants.push_back(Ant(newid, GetScreenWidth()/2, GetScreenHeight()/2));
-        idPool++;
+        idNums++;
+
+        // std::cout << "Ant replenished" << std::endl;
     }
 }
 
+
+void Colony::initializeExplored(int width, int height) {
+    explored.resize(height);  // Resize the vector to the height of the screen
+    for (auto& row : explored) {
+        row.resize(width, 0);  // Resize each row to the width of the screen and initialize with 0
+    }
+
+    // Set the center of the screen as explored
+    explored[GetScreenHeight()/2][GetScreenWidth()/2] = 1;
+}
+
+int Colony::calculatePercentageExplored() {
+    int totalCells = GetScreenWidth() * GetScreenHeight();
+    int exploredCells = 0;
+
+    for (auto& row : explored) {
+        for (int cell : row) {
+            if (cell == 1) {
+                exploredCells++;
+            }
+        }
+    }
+
+    return (exploredCells * 100) / totalCells;
+}

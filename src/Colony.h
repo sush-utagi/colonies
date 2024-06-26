@@ -13,12 +13,16 @@ public:
     void draw();
     void updateColony();
     void replenishColony(int numAnts);
+    int calculatePercentageExplored();
 
 private:
+    int idNums;
+    std::vector<std::vector<int>> explored;
     std::vector<Ant> ants;
     bool foundFood = false;
-    int idPool;
     Environment* environment;
+
+    void initializeExplored(int width, int height);
 };
 
 
