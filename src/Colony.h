@@ -17,6 +17,7 @@ public:
 private:
     std::vector<Ant> ants;
     bool foundFood = false;
+    int idPool;
     Environment* environment;
 };
 

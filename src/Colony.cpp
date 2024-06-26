@@ -1,14 +1,16 @@
 #include "Colony.h"
 #include <iostream>
 
-Colony::Colony(Environment* env) : environment(env) {
+Colony::Colony(Environment* env) : environment(env), idPool(1){
     // Constructor implementation
 }
 
 void Colony::initialize() {
     // Initialize the colony with 10 ants
     for (int i = 0; i < 10; i++) {
-        ants.push_back(Ant(i, GetScreenWidth()/2, GetScreenHeight()/2));
+        int newId = idPool;
+        ants.push_back(Ant(newId, GetScreenWidth()/2, GetScreenHeight()/2));
+        idPool++;   
     }
 }
 
@@ -61,8 +63,9 @@ void Colony::updateColony() {
 void Colony::replenishColony(int numAnts) {
     // Replenish the colony with new ants
     for (int i = 0; i < numAnts; i++) {
-        int newid = rand() % 9000 + 1000;
+        int newid = idPool;
         ants.push_back(Ant(newid, GetScreenWidth()/2, GetScreenHeight()/2));
+        idPool++;
     }
 }
 

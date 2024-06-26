@@ -8,6 +8,8 @@ Ant::Ant(int id) : id(id), x(0), y(0), lifeSpan(rand() % 901 + 100), maxHistory(
 
 Ant::Ant(int id, int x, int y) : id(id), x(x), y(y), lifeSpan(rand() % 901 + 100), maxHistory(10){
     // Constructor implementation
+    history.push_back({x, y});
+
 }
 
 void Ant::draw()
