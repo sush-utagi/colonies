@@ -33,6 +33,11 @@ void Colony::updateColony() {
     // Iterate through each ant in the colony
     for (Ant& ant : ants) {
         traverseExplored(ant);
+        // if ant is at screen boiundary kill it
+        if (ant.getX() == 0 || ant.getX() == GetScreenWidth() - 1 || ant.getY() == 0 || ant.getY() == GetScreenHeight() - 1) {
+            ant.lifeSpan = 0;
+            continue;
+        }
 
         if (ant.lifeSpan > 0) {
             ant.move();
@@ -41,7 +46,7 @@ void Colony::updateColony() {
             // Update the explored vector and transposed explored vector
             if (ant.getX() >= 0 && ant.getX() < GetScreenWidth() && ant.getY() >= 0 && ant.getY() < GetScreenHeight()) {
                 explored[ant.getY()][ant.getX()] = 1;
-                transposedExplored[ant.getX()][ant.getY()] = 1;
+                // transposedExplored[ant.getX()][ant.getY()] = 1;
             }
         }
     }
@@ -54,7 +59,7 @@ void Colony::updateColony() {
     numDead = std::distance(new_end, ants.end());
     ants.erase(new_end, ants.end());
 
-    std::cout << "Ants dead: " << numDead << std::endl;
+    // std::cout << "Ants dead: " << numDead << std::endl;
 
     replenishColony(numDead);
 }
@@ -67,7 +72,7 @@ void Colony::replenishColony(int numAnts) {
         ants.push_back(Ant(newid, GetScreenWidth()/2, GetScreenHeight()/2));
         idNums++;
 
-        std::cout << "Ant replenished current count: " << (int)ants.size() << std::endl;
+        // std::cout << "Ant replenished current count: " << (int)ants.size() << std::endl;
 
     }
 }
@@ -148,31 +153,31 @@ void Colony::traverseExplored(Ant &ant)
     // Evaluate direction and find the new position
     switch (randomDirection) {
         case LEFT: {
-            while(explored[antY][antX] == 1) {
+            while(explored[antY][antX] == 1 && antX > 0) {
                 ant.moveLeft();
-                ant.lifeSpan--;
+                // ant.lifeSpan--;
                 antX = ant.getX();
             }
             break;
         }
         case RIGHT:
-            while(explored[antY][antX] == 1) {
+            while(explored[antY][antX] == 1 && antX < GetScreenWidth() - 1){
                 ant.moveRight();
-                ant.lifeSpan--;
+                // ant.lifeSpan--;
                 antX = ant.getX();
             }
             break;
         case UP:
-            while(explored[antY][antX] == 1) {
+            while(explored[antY][antX] == 1 && antY > 0) {
                 ant.moveUp();
-                ant.lifeSpan--;
+                // ant.lifeSpan--;
                 antY = ant.getY();
             }
             break;
         case DOWN:
-            while(explored[antY][antX] == 1) {
+            while(explored[antY][antX] == 1 && antY < GetScreenHeight() - 1){
                 ant.moveDown();
-                ant.lifeSpan--;
+                // ant.lifeSpan--;
                 antY = ant.getY();
             }
             break;
@@ -186,7 +191,7 @@ void Colony::initializeExplored(int width, int height) {
     }
 
     // Set the center of the screen as explored
-    explored[width/2][height/2] = 1;
+    explored[height/2][width/2] = 1;
     std::cout << "Explored vector dimensions: " << explored.size() << " rows" << " x " << explored[0].size() << "/row" << std::endl;
 
     transposedExplored = transpose(explored);
@@ -218,6 +223,17 @@ void Colony::drawExplored()
             }
         }
     }
+}
+
+int Colony::getNumAliveAnts()
+{
+    int count = 0;
+    for (Ant& ant : ants) {
+        if (ant.lifeSpan > 0) {
+            count++;
+        }
+    }
+    return count;
 }
 
 std::vector<std::vector<int>> Colony::transpose(const std::vector<std::vector<int>> &matrix)

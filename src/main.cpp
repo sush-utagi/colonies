@@ -5,10 +5,7 @@
 #include "Environment.h"
 #include "Colony.h"
 
-
 int main() {
-
-
     // Initialization
     //--------------------------------------------------------------------------------------
     const int screenWidth = 800;
@@ -23,17 +20,23 @@ int main() {
     // Initialize and run the simulation
     colony.initialize();
     colony.runSimulation();
-
-
     //--------------------------------------------------------------------------------------
 
-    while (!WindowShouldClose()) 
-    {
-        // Update
-        //----------------------------------------------------------------------------------
-        ClearBackground(BLACK);
-        colony.updateColony();
-        //----------------------------------------------------------------------------------
+    bool isPaused = false; // Persistent pause state
+
+    while (!WindowShouldClose()) {
+        // Check if the space bar is pressed and toggle the game pause state
+        if (IsKeyPressed(KEY_SPACE)) {
+            isPaused = !isPaused;
+        }
+
+        if (!isPaused) {
+            // Update
+            //----------------------------------------------------------------------------------
+            ClearBackground(BLACK);
+            colony.updateColony();
+            //----------------------------------------------------------------------------------
+        }
 
         // Draw
         //----------------------------------------------------------------------------------
@@ -43,6 +46,8 @@ int main() {
         colony.draw();
 
         std::string percentageExplored = "Percentage Explored: " + std::to_string(colony.calculatePercentageExplored()) + "%";
+        std::string numLivingAnts = "Number of Living Ants: " + std::to_string(colony.getNumAliveAnts());
+        DrawText(numLivingAnts.c_str(), 10, 50, 20, WHITE);
         DrawText(percentageExplored.c_str(), 10, 10, 20, WHITE);
 
         // Check if the "M" key is held down and call drawExplored function
@@ -52,7 +57,8 @@ int main() {
 
         EndDrawing();
         //----------------------------------------------------------------------------------
-
     }
+
+    CloseWindow(); // Close window and OpenGL context
     return 0;
 }

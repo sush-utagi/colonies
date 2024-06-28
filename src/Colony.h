@@ -17,6 +17,7 @@ public:
     void traverseExplored(Ant& ant);
     int calculatePercentageExplored();
     void drawExplored();
+    int getNumAliveAnts();
 
 private:
     int idNums;

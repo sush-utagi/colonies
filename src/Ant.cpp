@@ -1,12 +1,12 @@
 #include "Ant.h"
 #include <iostream>
 
-Ant::Ant(int id) : id(id), x(0), y(0), lifeSpan(1000000000){
+Ant::Ant(int id) : id(id), x(0), y(0), lifeSpan(rand() % 901 + 100) {
     // Constructor implementation
     // history.push_back({x, y});
 }
 
-Ant::Ant(int id, int x, int y) : id(id), x(x), y(y), lifeSpan(1000000000){
+Ant::Ant(int id, int x, int y) : id(id), x(x), y(y), lifeSpan(rand() % 901 + 100){
     // Constructor implementation
 }
 
