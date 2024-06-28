@@ -13,16 +13,21 @@ public:
     void draw();
     void updateColony();
     void replenishColony(int numAnts);
+    std::pair<int, int> calculateAntNextPosition(Ant& ant);
+    void traverseExplored(Ant& ant);
     int calculatePercentageExplored();
+    void drawExplored();
 
 private:
     int idNums;
     std::vector<std::vector<int>> explored;
+    std::vector<std::vector<int>> transposedExplored;
     std::vector<Ant> ants;
     bool foundFood = false;
     Environment* environment;
 
     void initializeExplored(int width, int height);
+    std::vector<std::vector<int>> transpose(const std::vector<std::vector<int>>& matrix);
 };
 
 

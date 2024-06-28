@@ -16,10 +16,15 @@ public:
     void draw();
     void move();
     void moveTo(int x, int y);
+    void moveLeft();
+    void moveRight();
+    void moveUp();
+    void moveDown();
     // Other ant-related methods
 
     int getX() const { return x; }
     int getY() const { return y; }
+    int getId() const { return id; }
 
     bool operator==(const Ant& other) const;
 

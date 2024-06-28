@@ -39,11 +39,16 @@ int main() {
         //----------------------------------------------------------------------------------
         BeginDrawing();
 
-        colony.draw();
         environment.drawFoodImage();
+        colony.draw();
 
         std::string percentageExplored = "Percentage Explored: " + std::to_string(colony.calculatePercentageExplored()) + "%";
         DrawText(percentageExplored.c_str(), 10, 10, 20, WHITE);
+
+        // Check if the "M" key is held down and call drawExplored function
+        if (IsKeyDown(KEY_M)) {
+            colony.drawExplored();
+        }
 
         EndDrawing();
         //----------------------------------------------------------------------------------
