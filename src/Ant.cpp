@@ -87,6 +87,54 @@ void Ant::moveDown()
     }
 }
 
+void Ant::moveUpLeft()
+{
+    if (x > 0 && y > 0) {
+        x--;
+        y--;
+    } else {
+        x = GetScreenWidth()/2;
+        y = GetScreenHeight()/2;
+        lifeSpan = 0;
+    }
+}
+
+void Ant::moveUpRight()
+{
+    if (x < GetScreenWidth() && y > 0) {
+        x++;
+        y--;
+    } else {
+        x = GetScreenWidth()/2;
+        y = GetScreenHeight()/2;
+        lifeSpan = 0;
+    }
+}
+
+void Ant::moveDownLeft()
+{
+    if (x > 0 && y < GetScreenHeight()) {
+        x--;
+        y++;
+    } else {
+        x = GetScreenWidth()/2;
+        y = GetScreenHeight()/2;
+        lifeSpan = 0;
+    }
+}
+
+void Ant::moveDownRight()
+{
+    if (x < GetScreenWidth() && y < GetScreenHeight()) {
+        x++;
+        y++;
+    } else {
+        x = GetScreenWidth()/2;
+        y = GetScreenHeight()/2;
+        lifeSpan = 0;
+    }
+}
+
 bool Ant::operator==(const Ant& other) const {
     return id == other.id;
 }

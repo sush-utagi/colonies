@@ -9,7 +9,7 @@ int main() {
     // Initialization
     //--------------------------------------------------------------------------------------
     const int screenWidth = 800;
-    const int screenHeight = 450;
+    const int screenHeight = 650;
 
     InitWindow(screenWidth, screenHeight, "Ants");
     SetTargetFPS(60);

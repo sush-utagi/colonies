@@ -20,6 +20,10 @@ public:
     void moveRight();
     void moveUp();
     void moveDown();
+    void moveUpLeft();
+    void moveUpRight();
+    void moveDownLeft();
+    void moveDownRight();
     // Other ant-related methods
 
     int getX() const { return x; }

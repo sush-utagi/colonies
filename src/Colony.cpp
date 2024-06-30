@@ -1,5 +1,10 @@
 #include "Colony.h"
 #include <iostream>
+#include <algorithm>
+#include <random>
+#include <utility>
+
+
 
 Colony::Colony(Environment* env) : environment(env), idNums(0) {
     // Constructor implementation
@@ -25,7 +30,7 @@ void Colony::draw()
     for (Ant& ant : ants) {
         ant.draw();
     }
-}
+};
 
 void Colony::updateColony() {
     int numDead = 0;
@@ -33,7 +38,7 @@ void Colony::updateColony() {
     // Iterate through each ant in the colony
     for (Ant& ant : ants) {
         traverseExplored(ant);
-        // if ant is at screen boiundary kill it
+        // if ant is at screen boundary kill it
         if (ant.getX() == 0 || ant.getX() == GetScreenWidth() - 1 || ant.getY() == 0 || ant.getY() == GetScreenHeight() - 1) {
             ant.lifeSpan = 0;
             continue;
@@ -62,7 +67,7 @@ void Colony::updateColony() {
     // std::cout << "Ants dead: " << numDead << std::endl;
 
     replenishColony(numDead);
-}
+};
 
 
 void Colony::replenishColony(int numAnts) {
@@ -75,114 +80,102 @@ void Colony::replenishColony(int numAnts) {
         // std::cout << "Ant replenished current count: " << (int)ants.size() << std::endl;
 
     }
-}
+};
+
+void Colony::inferExplored()
+{
+
+};
 
 enum Direction {
     LEFT,
     RIGHT,
     UP,
-    DOWN
+    DOWN,
+    UP_LEFT,
+    UP_RIGHT,
+    DOWN_LEFT,
+    DOWN_RIGHT
 };
 
-std::pair<int, int> Colony::calculateAntNextPosition(Ant& ant)
-{
-    int antX = ant.getX();
-    int antY = ant.getY();
-
-    Direction randomDirection = static_cast<Direction>(rand() % 4);
-    int nextX = antX; // Default to current position if no suitable position is found
-    int nextY = antY;
-
-    // Evaluate direction and find the new position
-    switch (randomDirection) {
-        case LEFT:
-            // Start from the beginning of the row to current X position, find the first '1'
-            for (int x = 0; x < antX; ++x) {
-                if (explored[antY][x]) {
-                    nextX = x; // Found the leftmost explored cell
-                    break; // Exit once the first '1' is found
-                }
-            }
-            break;
-        case RIGHT:
-            // Start from current X position to the end of the row, find the first '1'
-            for (int x = (explored[0].size()-1); x > antX; x--) {
-                if (explored[antY][x]) {
-                    nextX = x;
-                    break;
-                }
-            }
-            break;
-        case UP:
-            // Start from the beginning of the column to current Y position, find the first '1'
-            for (int y = 0; y < antY; ++y) {
-                if (transposedExplored[antX][y]) {
-                    nextY = y;
-                    break;
-                }
-            }
-            break;
-        case DOWN:
-            for (int y = (transposedExplored[0].size()-1); y > antY; y--) {
-                if (transposedExplored[antX][y]) {
-                    nextY = y;
-                    break;
-                }
-            }
-            break;
-    }
-
-    // Ensure the ant moves to a valid new position within the boundaries
-    if ((nextX >= 0 && nextX < GetScreenWidth()) && (nextY >= 0 && nextY < GetScreenHeight())) {
-        return std::make_pair(nextX, nextY);
-    }
-
-    // If no valid or new position is found, return the current position
-    return std::make_pair(antX, antY);
-}
 
 void Colony::traverseExplored(Ant &ant)
 {
     int antX = ant.getX();
     int antY = ant.getY();
 
-    Direction randomDirection = static_cast<Direction>(rand() % 4);
-    int nextX = antX; // Default to current position if no suitable position is found
-    int nextY = antY;
+    // Better random number generation
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(0, 7);
+    Direction randomDirection = static_cast<Direction>(dis(gen));
 
     // Evaluate direction and find the new position
     switch (randomDirection) {
         case LEFT: {
-            while(explored[antY][antX] == 1 && antX > 0) {
+            while (explored[antY][antX] == 1 && antX > 0) {
                 ant.moveLeft();
-                // ant.lifeSpan--;
+                ant.lifeSpan--;
                 antX = ant.getX();
             }
             break;
         }
         case RIGHT:
-            while(explored[antY][antX] == 1 && antX < GetScreenWidth() - 1){
+            while (explored[antY][antX] == 1 && antX < GetScreenWidth() - 1) {
                 ant.moveRight();
-                // ant.lifeSpan--;
+                ant.lifeSpan--;
                 antX = ant.getX();
             }
             break;
         case UP:
-            while(explored[antY][antX] == 1 && antY > 0) {
+            while (explored[antY][antX] == 1 && antY > 0) {
                 ant.moveUp();
-                // ant.lifeSpan--;
+                ant.lifeSpan--;
                 antY = ant.getY();
             }
             break;
         case DOWN:
-            while(explored[antY][antX] == 1 && antY < GetScreenHeight() - 1){
+            while (explored[antY][antX] == 1 && antY < GetScreenHeight() - 1) {
                 ant.moveDown();
-                // ant.lifeSpan--;
+                ant.lifeSpan--;
+                antY = ant.getY();
+            }
+            break;
+        case UP_LEFT:
+            while (explored[antY][antX] == 1 && antX > 0 && antY > 0) {
+                ant.moveUpLeft();
+                ant.lifeSpan--;
+                antX = ant.getX();
+                antY = ant.getY();
+            }
+            break;
+        case UP_RIGHT:
+            while (explored[antY][antX] == 1 && antX < GetScreenWidth() - 1 && antY > 0) {
+                ant.moveUpRight();
+                ant.lifeSpan--;
+                antX = ant.getX();
+                antY = ant.getY();
+            }
+            break;
+        case DOWN_LEFT:
+            while (explored[antY][antX] == 1 && antX > 0 && antY < GetScreenHeight() - 1) {
+                ant.moveDownLeft();
+                ant.lifeSpan--;
+                antX = ant.getX();
+                antY = ant.getY();
+            }
+            break;
+        case DOWN_RIGHT:
+            while (explored[antY][antX] == 1 && antX < GetScreenWidth() - 1 && antY < GetScreenHeight() - 1) {
+                ant.moveDownRight();
+                ant.lifeSpan--;
+                antX = ant.getX();
                 antY = ant.getY();
             }
             break;
     }
 }
+
 
 void Colony::initializeExplored(int width, int height) {
     explored.resize(height);  // Resize the vector to the height of the screen
@@ -290,6 +283,63 @@ void Colony::updateColony() {
     }
 
     replenishColony(numDead);
+}
+
+std::pair<int, int> Colony::calculateAntNextPosition(Ant& ant)
+{
+    int antX = ant.getX();
+    int antY = ant.getY();
+
+    Direction randomDirection = static_cast<Direction>(rand() % 4);
+    int nextX = antX; // Default to current position if no suitable position is found
+    int nextY = antY;
+
+    // Evaluate direction and find the new position
+    switch (randomDirection) {
+        case LEFT:
+            // Start from the beginning of the row to current X position, find the first '1'
+            for (int x = 0; x < antX; ++x) {
+                if (explored[antY][x]) {
+                    nextX = x; // Found the leftmost explored cell
+                    break; // Exit once the first '1' is found
+                }
+            }
+            break;
+        case RIGHT:
+            // Start from current X position to the end of the row, find the first '1'
+            for (int x = (explored[0].size()-1); x > antX; x--) {
+                if (explored[antY][x]) {
+                    nextX = x;
+                    break;
+                }
+            }
+            break;
+        case UP:
+            // Start from the beginning of the column to current Y position, find the first '1'
+            for (int y = 0; y < antY; ++y) {
+                if (transposedExplored[antX][y]) {
+                    nextY = y;
+                    break;
+                }
+            }
+            break;
+        case DOWN:
+            for (int y = (transposedExplored[0].size()-1); y > antY; y--) {
+                if (transposedExplored[antX][y]) {
+                    nextY = y;
+                    break;
+                }
+            }
+            break;
+    }
+
+    // Ensure the ant moves to a valid new position within the boundaries
+    if ((nextX >= 0 && nextX < GetScreenWidth()) && (nextY >= 0 && nextY < GetScreenHeight())) {
+        return std::make_pair(nextX, nextY);
+    }
+
+    // If no valid or new position is found, return the current position
+    return std::make_pair(antX, antY);
 }
 
 */

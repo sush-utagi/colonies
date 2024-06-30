@@ -13,7 +13,8 @@ public:
     void draw();
     void updateColony();
     void replenishColony(int numAnts);
-    std::pair<int, int> calculateAntNextPosition(Ant& ant);
+    void inferExplored();
+    // std::pair<int, int> calculateAntNextPosition(Ant& ant);
     void traverseExplored(Ant& ant);
     int calculatePercentageExplored();
     void drawExplored();
