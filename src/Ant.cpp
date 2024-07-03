@@ -55,8 +55,9 @@ void Ant::moveLeft()
 {
     if (x > 0) x--;
     else {
-        x = GetScreenWidth()/2;
-        lifeSpan = 0;
+        moveRight();
+        // x = GetScreenWidth()/2;
+        // lifeSpan = 0;
     }
 }
 
@@ -64,8 +65,9 @@ void Ant::moveRight()
 {
     if (x < GetScreenWidth()) x++;
     else {
-        x = GetScreenWidth()/2;
-        lifeSpan = 0;
+        moveLeft();
+        // x = GetScreenWidth()/2;
+        // lifeSpan = 0;
     }
 }
 
@@ -73,8 +75,9 @@ void Ant::moveUp()
 {
     if (y > 0) y--;
     else {
-        y = GetScreenHeight()/2;
-        lifeSpan = 0;
+        moveDown();
+        // y = GetScreenHeight()/2;
+        // lifeSpan = 0;
     }
 }
 
@@ -82,8 +85,9 @@ void Ant::moveDown()
 {
     if (y < GetScreenHeight()) y++;
     else {
-        y = GetScreenHeight()/2;
-        lifeSpan = 0;
+        moveUp();
+        // y = GetScreenHeight()/2;
+        // lifeSpan = 0;
     }
 }
 
@@ -93,9 +97,10 @@ void Ant::moveUpLeft()
         x--;
         y--;
     } else {
-        x = GetScreenWidth()/2;
-        y = GetScreenHeight()/2;
-        lifeSpan = 0;
+        moveDownRight();
+        // x = GetScreenWidth()/2;
+        // y = GetScreenHeight()/2;
+        // lifeSpan = 0;
     }
 }
 
@@ -105,9 +110,10 @@ void Ant::moveUpRight()
         x++;
         y--;
     } else {
-        x = GetScreenWidth()/2;
-        y = GetScreenHeight()/2;
-        lifeSpan = 0;
+        moveDownLeft();
+        // x = GetScreenWidth()/2;
+        // y = GetScreenHeight()/2;
+        // lifeSpan = 0;
     }
 }
 
@@ -117,9 +123,10 @@ void Ant::moveDownLeft()
         x--;
         y++;
     } else {
-        x = GetScreenWidth()/2;
-        y = GetScreenHeight()/2;
-        lifeSpan = 0;
+        moveUpRight();
+        // x = GetScreenWidth()/2;
+        // y = GetScreenHeight()/2;
+        // lifeSpan = 0;
     }
 }
 
@@ -129,9 +136,10 @@ void Ant::moveDownRight()
         x++;
         y++;
     } else {
-        x = GetScreenWidth()/2;
-        y = GetScreenHeight()/2;
-        lifeSpan = 0;
+        moveUpLeft();
+        // x = GetScreenWidth()/2;
+        // y = GetScreenHeight()/2;
+        // lifeSpan = 0;
     }
 }
 

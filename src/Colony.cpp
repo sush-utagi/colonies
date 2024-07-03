@@ -84,7 +84,7 @@ void Colony::replenishColony(int numAnts) {
 
 void Colony::inferExplored()
 {
-
+    
 };
 
 enum Direction {
@@ -115,7 +115,7 @@ void Colony::traverseExplored(Ant &ant)
         case LEFT: {
             while (explored[antY][antX] == 1 && antX > 0) {
                 ant.moveLeft();
-                ant.lifeSpan--;
+                // ant.lifeSpan--;
                 antX = ant.getX();
             }
             break;
@@ -123,28 +123,28 @@ void Colony::traverseExplored(Ant &ant)
         case RIGHT:
             while (explored[antY][antX] == 1 && antX < GetScreenWidth() - 1) {
                 ant.moveRight();
-                ant.lifeSpan--;
+                // ant.lifeSpan--;
                 antX = ant.getX();
             }
             break;
         case UP:
             while (explored[antY][antX] == 1 && antY > 0) {
                 ant.moveUp();
-                ant.lifeSpan--;
+                // ant.lifeSpan--;
                 antY = ant.getY();
             }
             break;
         case DOWN:
             while (explored[antY][antX] == 1 && antY < GetScreenHeight() - 1) {
                 ant.moveDown();
-                ant.lifeSpan--;
+                // ant.lifeSpan--;
                 antY = ant.getY();
             }
             break;
         case UP_LEFT:
             while (explored[antY][antX] == 1 && antX > 0 && antY > 0) {
                 ant.moveUpLeft();
-                ant.lifeSpan--;
+                // ant.lifeSpan--;
                 antX = ant.getX();
                 antY = ant.getY();
             }
@@ -152,7 +152,7 @@ void Colony::traverseExplored(Ant &ant)
         case UP_RIGHT:
             while (explored[antY][antX] == 1 && antX < GetScreenWidth() - 1 && antY > 0) {
                 ant.moveUpRight();
-                ant.lifeSpan--;
+                // ant.lifeSpan--;
                 antX = ant.getX();
                 antY = ant.getY();
             }
@@ -160,7 +160,7 @@ void Colony::traverseExplored(Ant &ant)
         case DOWN_LEFT:
             while (explored[antY][antX] == 1 && antX > 0 && antY < GetScreenHeight() - 1) {
                 ant.moveDownLeft();
-                ant.lifeSpan--;
+                // ant.lifeSpan--;
                 antX = ant.getX();
                 antY = ant.getY();
             }
@@ -168,7 +168,7 @@ void Colony::traverseExplored(Ant &ant)
         case DOWN_RIGHT:
             while (explored[antY][antX] == 1 && antX < GetScreenWidth() - 1 && antY < GetScreenHeight() - 1) {
                 ant.moveDownRight();
-                ant.lifeSpan--;
+                // ant.lifeSpan--;
                 antX = ant.getX();
                 antY = ant.getY();
             }
